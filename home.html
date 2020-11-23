@@ -3,7 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Quicksand"
+      defer
+    />
+    <title>MedPass</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
@@ -29,9 +34,13 @@
     ></script>
     <script src="asset/firebase_login.js" defer></script>
     <script src="asset/logout.js" defer></script>
+    <script src="asset/Home.js" defer></script>
     <style>
+      /* * {
+        outline: 1px solid red;
+      } */
       * {
-        /* outline: 1px solid red; */
+        font-family: "Quicksand";
       }
       #nav-list.show {
         display: flex;
@@ -56,10 +65,13 @@
         #nav-list {
           width: 100%;
         }
+        #firstDiv {
+          font-size: 1rem;
+        }
       }
     </style>
   </head>
-  <body class="box-border bg-gray-200">
+  <body class="box-border">
     <header>
       <div class="container mx-auto p-2">
         <nav class="flex justify-between items-center flex-wrap">
@@ -70,13 +82,17 @@
                 src="/logo/circle/circle_logo.svg"
                 alt="Logo"
             /></a>
-            <a class="p-2 text-blue-800 font-semibold" href="#">MedPass</a>
+            <a class="text-3xl ml-4 text-blue-900 font-extrabold" href="#"
+              >MedPass</a
+            >
           </div>
           <button onclick="toggleHam()" class="" id="hamBurger">
             <img class="h-6 m-2" src="/asset/ham.svg" alt="Menu" />
           </button>
           <ul id="nav-list" class="">
-            <li class="p-2 m-1"><a class="block p-2" href="">Account</a></li>
+            <li class="p-2 m-1">
+              <a class="block p-2" href="/profile.html">Profile</a>
+            </li>
             <li class="p-2 m-1">
               <a class="block p-2" href="#" onclick="logout()">Log Out</a>
             </li>
@@ -84,11 +100,15 @@
         </nav>
       </div>
     </header>
+
     <div class="container mx-auto">
-      <div class="mt-3 max-w-sm rounded overflow-hidden shadow-lg bg-white">
-        <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2">Hellow 😅</div>
+      <div class="flex items-center mt-3 max-w-lg rounded overflow-hidden">
+        <div class="pl-6 pr-1 py-4">
+          <p id="firstDiv" class="font-semibold text-3xl mb-2">
+            Hello<span id="hName"></span>!
+          </p>
         </div>
+        <img height="28px" width="28px" alt="Wave Hand" src="/asset/wave.ico" />
       </div>
     </div>
   </body>

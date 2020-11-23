@@ -1,110 +1,274 @@
 <!DOCTYPE html>
 <html lang="en-US">
-    <head>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>MedPass</title>
-        <meta name="description" content="Your medical passport!">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <link rel="shortcut icon" href="/logo/circle/circle-logo_64.png" type="image/x-icon">
-        <link rel="stylesheet" href="/asset/main.css">
-        
-        <!-- Firebase Scripts -->
-        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js" defer></script>
-        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js" defer></script>
-        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js" defer></script>
-        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js" defer></script>
-        <script src="asset/firebase_login.js" defer></script>
-        <script src="asset/login.js" defer></script>
-        <!-- Done -->
-    </head>
-    <body style="background-color: #f1efef;">
-        <header class="flex items-center justify-center py-3">
-            <div>
-                <img class="h-16 sm:h-16 " src="logo/circle/circle_logo.svg" alt="Logo">
-            </div>
-            <div class="text-4xl ml-4 text-blue-900">
-                MedPass
-            </div>
-        </header>    
-        
-        <!-- Login part -->
-        <div id="login_div">
-            <div class=" items-center justify-center">
-                <div class="text-center mt-16">
-                    <h2 class="text-2xl tracking-tight">
-                    Sign in
-                    </h2>
-                    <span class="text-sm">or<a href="#" onclick="regModal()" class="text-blue-500"> 
-                    register a new account
-                    </a>
-                </span>
-                </div>
-                <div class="flex justify-center my-2 mx-4 md:mx-0">
-                    <form action="#" class="w-full max-w-xl bg-white rounded-lg shadow-md p-6">
-                        <div class="flex flex-wrap -mx-3 mb-6">
-                            <div class="w-full md:w-full px-3 pt-4 mb-6">
-                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >Email address</label>
-                                <input class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none" type='email' placeholder="Email ID" id="email_field" required>
-                            </div>
-                            <div class="w-full md:w-full px-3 mb-6">
-                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >Password</label>
-                                <input class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none" type='password' placeholder="••••••••" id="password_field" required>
-                            </div>
-                            <div class="w-full md:w-full px-3 mb-6">
-                                <button class="appearance-none block w-full bg-blue-600 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-blue-500 focus:outline-none focus:bg-white focus:border-gray-500" onclick="login()">Sign in</button>
-                            </div>
-                            <div class="mx-auto -mb-6 pb-1 flex-col items-center justify-center w-full md:w-1/3 px-3 pt-4">
-                                <span class="text-center text-xs text-gray-700 w-full block">or sign in using</span>
-                                <span class="flex-row justify-center items-center">
-                                    <button class='mx-auto appearance-none flex items-center justify-center  mt-3'>
-                                        <img alt="Google Logo" src="data:image/png;base64,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" height="36px" width="36px"/>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>MedPass</title>
+    <meta name="description" content="Your medical passport!" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Quicksand"
+      defer
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <link
+      rel="shortcut icon"
+      href="/logo/circle/circle-logo_64.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/asset/main.css" />
+
+    <!-- Firebase Scripts -->
+    <script
+      src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"
+      defer
+    ></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"
+      defer
+    ></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"
+      defer
+    ></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"
+      defer
+    ></script>
+    <script src="asset/firebase_login.js" defer></script>
+    <script src="asset/login.js" defer></script>
+    <!-- Done -->
+    <style>
+            * {
+        font-family: "Quicksand";
+      }
+    </style>
+  </head>
+  <body style="background-color: #f1efef;">
+    <header class="flex items-center justify-center py-3">
+      <div>
+        <img
+          class="h-16 sm:h-16"
+          src="logo/circle/circle_logo.svg"
+          alt="Logo"
+        />
+      </div>
+      <div class="text-4xl ml-4 text-blue-900 font-medium">
+        MedPass
+      </div>
+    </header>
+
+    <!-- Login part -->
+    <div id="login_div">
+      <div class="items-center justify-center">
+        <div class="text-center mt-10">
+          <h2 class="text-2xl tracking-tight">
+            Sign in
+          </h2>
+          <span class="text-sm"
+            >or<a href="#" onclick="regModal()" class="text-blue-500">
+              register a new account
+            </a>
+          </span>
         </div>
+        <div class="flex justify-center my-2 mx-4 md:mx-0">
+          <form
+            action="#"
+            class="w-full max-w-xl bg-white rounded-lg shadow-md p-6"
+          >
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full md:w-full px-3 pt-4 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  >Email address</label
+                >
+                <input
+                  class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:shadow-outline hover:border-blue-500"
+                  type="email"
+                  placeholder="Email ID"
+                  id="email_field"
+                  required
+                />
+              </div>
+              <div class="w-full md:w-full px-3 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  >Password</label
+                >
+                <input
+                  class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:shadow-outline hover:border-blue-500"
+                  type="password"
+                  placeholder="••••••••"
+                  id="password_field"
+                  required
+                />
+              </div>
+              <div class="div w-full md:w-full px-3 ml-1 mb-2 hidden" id="wEnP">
+                <p class="text-red-600">Please recheck email or password.</p>
+              </div>
+              <div class="w-full md:w-full px-3 mb-1">
+                <button
+                  class="appearance-none block w-full bg-blue-600 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-blue-500 focus:outline-none focus:bg-white focus:border-gray-500"
+                  onclick="login()"
+                >
+                  Sign in
+                </button>
+              </div>
+              <div
+                class="flex justify-center items-center w-full md:w-full px-3 mb-1"
+              >
+                <a href="#" onclick="fPass()" class="text-xs text-blue-700">Forgot Password?</a>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="mx-auto -mb-6 pb-1 flex-col items-center justify-center w-full md:w-1/3 px-3 pt-4"
+        >
+          <span class="text-center text-xs text-gray-700 w-full block"
+            >or sign in using</span
+          >
+          <span class="flex-row justify-center items-center">
+            <button
+              class="mx-auto appearance-none flex items-center justify-center mt-3"
+              onclick="glogin()"
+            >
+              <img
+                alt="Google Logo"
+                src="data:image/png;base64,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"
+                height="36px"
+                width="36px"
+              />
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
 
     <!-- Registering -->
     <div id="reg_div" style="display: none;">
-        <div class=" items-center justify-center">
-            <div class="text-center mt-16">
-                <h2 class="text-2xl tracking-tight">
-                Register
-                </h2>
-                <span class="text-sm">or<a href="#" onclick="signin()" class="text-blue-500"> 
-                sign in
-                </a>
-            </span>
-            </div>
-            <div class="flex justify-center my-2 mx-4 md:mx-0">
-                <form action="#" class="w-full max-w-xl bg-white rounded-lg shadow-md p-6">
-                    <div class="flex flex-wrap -mx-3 mb-6">
-                        <div class="w-full md:w-full px-3 pt-4 mb-6">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >Email address</label>
-                            <input class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none" type='email' placeholder="Email ID" id="reg_email_field" required>
-                        </div>
-                        <div class="w-full md:w-full px-3 mb-6">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >Password</label>
-                            <input class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none" type='password' placeholder="••••••••" id="reg_password_field" required>
-                        </div>
-                        <div class="w-full md:w-full px-3 mb-6">
-                            <button class="appearance-none block w-full bg-blue-900 hover:bg-blue-500 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onclick="register()">Register</button>
-                        </div>
-                        <div class="mx-auto -mb-6 pb-1 flex-col items-center justify-center w-full md:w-1/3 px-3 pt-4">
-                            <span class="text-center text-xs text-gray-700 w-full block">or sign in using</span>
-                            <span class="flex-row justify-center items-center">
-                                <button class='mx-auto appearance-none flex items-center justify-center  mt-3'>
-                                    <img alt="Google Logo" src="data:image/png;base64,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" height="36px" width="36px"/>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
+      <div class="items-center justify-center">
+        <div class="text-center mt-10">
+          <h2 class="text-2xl tracking-tight">
+            Register
+          </h2>
+          <span class="text-sm"
+            >or<a href="#" onclick="signin()" class="text-blue-500">
+              sign in
+            </a>
+          </span>
         </div>
+        <div class="flex justify-center my-2 mx-4 md:mx-0">
+          <form
+            action="#"
+            class="w-full max-w-xl bg-white rounded-lg shadow-md p-6"
+          >
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full md:w-full px-3 pt-4 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  >Email address</label
+                >
+                <input
+                  class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+                  type="email"
+                  placeholder="Email ID"
+                  id="reg_email_field"
+                  required
+                />
+              </div>
+              <div class="w-full md:w-full px-3 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  >Password</label
+                >
+                <input
+                  class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+                  type="password"
+                  placeholder="••••••••"
+                  id="reg_password_field"
+                  required
+                />
+              </div>
+              <div class="w-full md:w-full px-3 mb-4">
+                <button
+                  class="appearance-none block w-full bg-blue-900 hover:bg-blue-500 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  onclick="register()"
+                >
+                  Register
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div
+        class="mx-auto -mb-6 pb-1 flex-col items-center justify-center w-full md:w-1/3 px-3 pt-4"
+      >
+        <span class="text-center text-xs text-gray-700 w-full block"
+          >or sign up using</span
+        >
+        <span class="flex-row justify-center items-center">
+          <button
+            class="mx-auto appearance-none flex items-center justify-center mt-3"
+          >
+            <img
+              alt="Google Logo"
+              src="data:image/png;base64,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"
+              height="36px"
+              width="36px"
+            />
+          </button>
+        </span>
+      </div>
     </div>
-    </body>
+
+    <!-- Reset Password -->
+    <div id="resetPassword" style="display: none;">
+      <div class="items-center justify-center">
+        <div class="text-center mt-10">
+          <a href="#" onclick="signin()" class="text-2xl tracking-tight text-blue-500">
+            Sign in
+          </a>
+          </span>
+        </div>
+        <div class="flex justify-center my-2 mx-4 md:mx-0">
+          <form
+            action="#"
+            class="w-full max-w-xl bg-white rounded-lg shadow-md p-6"
+          >
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full md:w-full px-3 pt-4 mb-6">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  >Email address</label
+                >
+                <input
+                  class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+                  type="email"
+                  placeholder="Email ID"
+                  id="resetPassEmail"
+                  required
+                />
+              </div>
+              <div class="div w-full md:w-full px-3 ml-1 mb-2 hidden" id="eidNF">
+                <p class="text-red-600">Email is not registered.</p>
+              </div>
+              <div class="w-full md:w-full px-3 mb-3">
+                <button
+                  class="appearance-none block w-full bg-blue-900 hover:bg-blue-500 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  onclick="rPass()"
+                >
+                  Request for a new password!
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
